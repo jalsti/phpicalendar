@@ -61,10 +61,9 @@ Usage (Sunbird Calendar):
 	Password: either your web server password, or auth_internal_password 
 
 Hints:
-1. PHP 5.1.0 or greater is required
+1. PHP 8.0 or greater is required
 2. Your version of php and apache MUST support $_SERVER['PATH_INFO']
-3. Depending on your web server environment, you may need to set safe_mode = Off
-   (this won't be necessary if you are using a wrapper like cgiwrap or suexec) 
+3. Ensure the PHP process has write access to the calendar directory.
 
 Troubleshooting:
 You can turn on logging by setting the PHPICALENDAR_LOG_PUBLISHING constant to 1 below.

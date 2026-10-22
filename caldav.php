@@ -3,8 +3,7 @@ define('BASE', './');
 require_once(BASE . 'functions/init.inc.php');
 require_once(BASE . 'functions/calendar_functions.php');
 
-//require_once(BASE . 'lib/HTTP/WebDAV/Server.php');
-require_once('/home/jablko/public_html/gallery2/modules/webdav/lib/HTTP/WebDAV/Server.php');
+require_once(BASE . 'lib/HTTP/WebDAV/Server.php');
 require_once(BASE . 'lib/HTTP/CalDAV/Server.php');
 
 require_once(BASE . 'lib/bennu/bennu.class.php');
@@ -14,7 +13,7 @@ require_once(BASE . 'lib/bennu/iCalendar_properties.php');
 require_once(BASE . 'lib/bennu/iCalendar_rfc2445.php');
 
 class HTTP_CalDAV_Server_PHPiCalendar extends HTTP_CalDAV_Server {
-	function getBasePath() {
+	public static function getBasePath() {
 		global $calendar_path;
 		static $basePath;
 
@@ -34,7 +33,7 @@ class HTTP_CalDAV_Server_PHPiCalendar extends HTTP_CalDAV_Server {
 		return $basePath;
 	}
 
-	function deletePath($absolutePath) {
+	public static function deletePath($absolutePath) {
 		$dirs = array();
 		$paths = array();
 		while (isset($absolutePath)) {

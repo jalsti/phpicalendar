@@ -15,13 +15,17 @@ if ($phpiCal_config->save_parsed_cals == 'yes') {
 	$filename = sha1(implode(',', $cal_filelist));
 	$parsedcal = $phpiCal_config->tmp_dir . '/parsedcal-' . $filename . '-' . $this_year;
 	if (file_exists($parsedcal)) {
-		$fd = fopen($parsedcal, 'r');
-		$contents = fread($fd, filesize($parsedcal));
-		fclose($fd);
-		$master_array = unserialize($contents);
+		$contents = file_get_contents($parsedcal);
+		$master_array = is_string($contents)
+			? unserialize($contents, array('allowed_classes' => false))
+			: false;
 		$y=0;
 		// Check the calendars' last-modified time to determine if any need to be re-parsed
-		if (count($master_array['-4']) == count($cal_filelist)) {
+		if (is_array($master_array)
+			&& isset($master_array['-4'], $master_array['-3'])
+			&& is_array($master_array['-4'])
+			&& is_array($master_array['-3'])
+			&& count($master_array['-4']) == count($cal_filelist)) {
 			foreach ($master_array['-4'] as $temp_array) {
 				$mtime = $temp_array['mtime'];
 				$fname = $temp_array['filename'];
@@ -59,7 +63,7 @@ if ($phpiCal_config->save_parsed_cals == 'yes') {
 
 			// And the $y magic number is used here to determine if all calendars are up-to-date
 			if ($y == count($cal_filelist)) {
-				if ($master_array['-1'] == 'valid cal file') {
+				if (isset($master_array['-1']) && $master_array['-1'] == 'valid cal file') {
 					// At this point, all calendars are up-to-date, so we can simply used the pre-parsed data
 					$parse_file = false;
 					$calendar_name = $master_array['calendar_name'];
@@ -131,12 +135,12 @@ foreach ($cal_filelist as $cal_key=>$filename) {
 		while (!feof($ifile)) {
 			$line = $nextline;
 			$nextline = fgets($ifile, 1024);
-			$nextline = ereg_replace("[\r\n]", '', $nextline);
+			$nextline = preg_replace("/[\r\n]/", '', $nextline);
 			#handle continuation lines that start with either a space or a tab (MS Outlook)
-			while (isset($nextline{0}) && ($nextline{0} == ' ' || $nextline{0} == "\t")) {
+			while (isset($nextline[0]) && ($nextline[0] == ' ' || $nextline[0] == "\t")) {
 				$line = $line . substr($nextline, 1);
 				$nextline = fgets($ifile, 1024);
-				$nextline = ereg_replace("[\r\n]", '', $nextline);
+				$nextline = preg_replace("/[\r\n]/", '', $nextline);
 			}
 			$line = str_replace('\n', "\n", $line);
 			$line = str_replace('\t', "\t", $line);
@@ -261,7 +265,7 @@ foreach ($cal_filelist as $cal_key=>$filename) {
 
 				default:
 					unset ($field, $data, $prop_pos, $property);
-					if (ereg ("([^:]+):(.*)", $line, $line)){
+					if (preg_match ("/([^:]+):(.*)/", $line, $line)){
 					$field = $line[1];
 					$data = $line[2];
 					$property = strtoupper($field);
@@ -327,7 +331,7 @@ foreach ($cal_filelist as $cal_key=>$filename) {
 							break;
 
 						case 'EXDATE':
-							$data = split(',', $data);
+							$data = explode(',', $data);
 							foreach ($data as $exdata) {
 								$exdata = str_replace('T', '', $exdata);
 								$exdata = str_replace('Z', '', $exdata);
@@ -367,7 +371,7 @@ foreach ($cal_filelist as $cal_key=>$filename) {
 						case 'RECURRENCE-ID':
 							$parts = explode(';', $field);
 							foreach($parts as $part) {
-								$eachval = split('=',$part);
+								$eachval = explode('=',$part);
 								if ($eachval[0] == 'RECURRENCE-ID') {
 									// do nothing
 								} elseif ($eachval[0] == 'TZID') {
@@ -384,7 +388,7 @@ foreach ($cal_filelist as $cal_key=>$filename) {
 
 							$data = str_replace('T', '', $data);
 							$data = str_replace('Z', '', $data);
-							ereg ('([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})', $data, $regs);
+							preg_match ('/([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{0,2})([0-9]{0,2})/', $data, $regs);
 							$recurrence_id['date'] = $regs[1] . $regs[2] . $regs[3];
 							$recurrence_id['time'] = $regs[4] . $regs[5];
 
@@ -422,21 +426,21 @@ foreach ($cal_filelist as $cal_key=>$filename) {
 							break;
 						case 'DURATION':
 							if (($first_duration == TRUE) && (!stristr($field, '=DURATION'))) {
-								ereg ('^P([0-9]{1,2}[W])?([0-9]{1,3}[D])?([T]{0,1})?([0-9]{1,2}[H])?([0-9]{1,2}[M])?([0-9]{1,2}[S])?', $data, $duration);
-								$weeks 			= str_replace('W', '', $duration[1]);
-								$days 			= str_replace('D', '', $duration[2]);
-								$hours 			= str_replace('H', '', $duration[4]);
-								$minutes 		= str_replace('M', '', $duration[5]);
-								$seconds 		= str_replace('S', '', $duration[6]);
+								preg_match ('/^P([0-9]{1,2}[W])?([0-9]{1,3}[D])?([T]{0,1})?([0-9]{1,2}[H])?([0-9]{1,2}[M])?([0-9]{1,2}[S])?/', $data, $duration);
+								$weeks 			= (int)str_replace('W', '', $duration[1]);
+								$days 			= (int)str_replace('D', '', $duration[2]);
+								$hours 			= (int)str_replace('H', '', $duration[4]);
+								$minutes 		= (int)str_replace('M', '', $duration[5]);
+								$seconds 		= (int)str_replace('S', '', $duration[6]);
 								$the_duration 	= ($weeks * 60 * 60 * 24 * 7) + ($days * 60 * 60 * 24) + ($hours * 60 * 60) + ($minutes * 60) + ($seconds);
 								$first_duration = FALSE;
 							}
 							break;
 						case 'RRULE':
 							$data = str_replace ('RRULE:', '', $data);
-							$rrule = split (';', $data);
+							$rrule = explode (';', $data);
 							foreach ($rrule as $recur) {
-								ereg ('(.*)=(.*)', $recur, $regs);
+								preg_match ('/(.*)=(.*)/', $recur, $regs);
 								$rrule_array[$regs[1]] = $regs[2];
 							}
 							break;

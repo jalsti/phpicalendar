@@ -31,8 +31,8 @@ $event['event_text']  = sanitizeForWeb(urldecode($event['event_text']));
 $event['description'] = sanitizeForWeb(urldecode($event['description']));
 $event['location']    = sanitizeForWeb(urldecode($event['location']));
 if (isset($event['description'])) {
-	$event['description'] = ereg_replace("(blocked)?([[:alpha:]]+://([^<>&[:space:]]|&amp;)+[[:alnum:]/])", '<a target="_new" href="\2">\2</a>', $event['description']);
-	$event['description'] = ereg_replace("(blocked)?(mailto:)?([[:alnum:]_.%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,4})", '<a href="mailto:\3">\3</a>', $event['description']);
+	$event['description'] = preg_replace("/(blocked)?([a-zA-Z]+:\/\/([^<>&[:space:]]|&amp;)+[a-zA-Z0-9]\/)/", '<a target="_new" href="\2">\2</a>', $event['description']);
+	$event['description'] = preg_replace("/(blocked)?(mailto:)?([a-zA-Z0-9_.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/", '<a href="mailto:\3">\3</a>', $event['description']);
 }
 
 if (isset($organizer) && is_array($organizer)) {
@@ -62,8 +62,8 @@ if (isset($attendee) && is_array($attendee)) {
 	$attendee = implode(', ',$attendees);
 }
 if (isset($event['location'])) $event['location'] = stripslashes($event['location']);
-if (sizeof($attendee) == 0) $attendee = '';
-if (sizeof($organizer) == 0) $organizer = '';
+if (empty($attendee)) $attendee = '';
+if (empty($organizer)) $organizer = '';
 if ($event['url'] != '') $event['url'] = '<a href="'.$event['url'].'" target="_blank">'.$event['url'].'</a>';
 
 switch ($event['status']){

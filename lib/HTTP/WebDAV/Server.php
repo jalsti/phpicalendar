@@ -18,9 +18,9 @@
 //
 // $Id: Server.php,v 1.2 2006/04/14 02:50:09 jablko Exp $
 
-require_once 'Tools/_parse_propfind.php';
-require_once 'Tools/_parse_proppatch.php';
-require_once 'Tools/_parse_lockinfo.php';
+require_once __DIR__ . '/Tools/_parse_propfind.php';
+require_once __DIR__ . '/Tools/_parse_proppatch.php';
+require_once __DIR__ . '/Tools/_parse_lockinfo.php';
 
 /**
  * Virtual base class for implementing WebDAV servers
@@ -84,6 +84,13 @@ class HTTP_WebDAV_Server
      */
     var $_prop_encoding = 'utf-8';
 
+    /**
+     * Separator used for multipart byte-range responses
+     *
+     * @var string
+     */
+    var $multipart_separator;
+
     // }}}
 
     // {{{ ServeRequest
@@ -109,10 +116,6 @@ class HTTP_WebDAV_Server
             $this->path = $this->_urldecode($_SERVER['PATH_INFO']);
             $this->path = ltrim($this->path, '/');
             $this->path = rtrim($this->path, '/');
-        }
-
-        if (ini_get('magic_quotes_gpc')) {
-            $this->path = stripslashes($this->path);
         }
 
         // set base uri
@@ -920,7 +923,7 @@ class HTTP_WebDAV_Server
         if (isset($_SERVER['HTTP_RANGE'])) {
 
             // we only support standard 'bytes' range specifications for now
-            if (ereg('bytes[[:space:]]*=[[:space:]]*(.+)', $_SERVER['HTTP_RANGE'], $matches)) {
+            if (preg_match('/bytes[[:space:]]*=[[:space:]]*(.+)/', $_SERVER['HTTP_RANGE'], $matches)) {
                 $options['ranges'] = array();
 
                 // ranges are comma separated
@@ -1713,7 +1716,7 @@ class HTTP_WebDAV_Server
         // set headers before we start printing
         $this->http_status($status);
 
-        if ($status{0} == 2) { // 2xx states are ok
+        if ($status[0] == 2) { // 2xx states are ok
             header('Content-Type: text/xml; charset="utf-8"');
             header("Lock-Token: <$options[token]>");
 
@@ -1980,10 +1983,10 @@ class HTTP_WebDAV_Server
         $uuid = md5(microtime() . getmypid()); // this should be random enough for now
 
         // set variant and version fields for 'true' random uuid
-        $uuid{12} = '4';
-        $n = 8 + (ord($uuid{16}) & 3);
+        $uuid[12] = '4';
+        $n = 8 + (ord($uuid[16]) & 3);
         $hex = '0123456789abcdef';
-        $uuid{16} = $hex{$n};
+        $uuid[16] = $hex[$n];
 
         // return formated uuid
         return substr($uuid,  0, 8) . '-' .
@@ -2018,7 +2021,7 @@ class HTTP_WebDAV_Server
     function _if_header_lexer($string, &$pos)
     {
         // skip whitespace
-        while (ctype_space($string{$pos})) {
+        while (ctype_space($string[$pos])) {
             ++$pos;
         }
 
@@ -2028,7 +2031,7 @@ class HTTP_WebDAV_Server
         }
 
         // get next character
-        $c = $string{$pos++};
+        $c = $string[$pos++];
 
         // now it depends on what we found
         switch ($c) {
@@ -2043,7 +2046,7 @@ class HTTP_WebDAV_Server
             // ETags are enclosed in [...]
             case '[':
                 $type = 'ETAG_STRONG';
-                if ($string{$pos} == 'W') {
+                if ($string[$pos] == 'W') {
                     $type = 'ETAG_WEAK';
                     $pos += 2;
                 }
@@ -2180,7 +2183,7 @@ class HTTP_WebDAV_Server
                 // but if opaquelocktokens are used (RFC2518 6.4)
                 // we have to check the format (litmus tests this)
                 if (!strncmp($condition, '<opaquelocktoken:', strlen('<opaquelocktoken'))) {
-                    if (!ereg('^<opaquelocktoken:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}>$', $condition)) {
+                    if (!preg_match('/^<opaquelocktoken:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}>$/', $condition)) {
                         return;
                     }
                 }
@@ -2378,7 +2381,15 @@ class HTTP_WebDAV_Server
         case 'iso-8859-15':
         case 'latin-1':
         default:
-            return utf8_encode($text);
+            $encoding = strtolower($this->_prop_encoding);
+            if ($encoding == 'latin-1') {
+                $encoding = 'ISO-8859-1';
+            }
+            $converted = iconv($encoding, 'UTF-8', $text);
+            if ($converted === false) {
+                throw new RuntimeException('Unable to convert WebDAV property text to UTF-8.');
+            }
+            return $converted;
         }
     }
 

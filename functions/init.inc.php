@@ -1,11 +1,10 @@
-<?php 
-# require php 5
+<?php
 $php_started = getmicrotime();
 # define BASE
 if (!defined('BASE')) define('BASE', './');
-if (phpversion() < '5.1'){
-	die (phpversion()." detected. php 5.1 or higher required for this version.\n\n" );
-}	
+if (PHP_VERSION_ID < 80000) {
+	die(PHP_VERSION . " detected. PHP 8.0 or higher is required for this version.\n\n");
+}
 include_once(BASE.'functions/init/sanitize.php');
 include_once(BASE.'functions/init/set_error_reporting.php');
 include_once(BASE.'functions/init/configs.php');
@@ -149,7 +148,7 @@ if (count($local_cals) > 0) {
 			$subscribe_path = 'webcal://'.$_SERVER['SERVER_NAME'].dirname($_SERVER['PHP_SELF']).'/'.$filename;
 			$download_filename = $filename;
 		} elseif ($phpiCal_config->download_uri != '') {
-			$newurl = eregi_replace("^(http://)", "", $phpiCal_config->download_uri); 
+			$newurl = preg_replace("/^(http:\/\/)/i", "", $phpiCal_config->download_uri);
 				$subscribe_path = 'webcal://'.$newurl.'/'.$add_cpath.basename($filename);
 				$download_filename = $phpiCal_config->download_uri.'/'.$add_cpath.basename($filename);
 		} else {

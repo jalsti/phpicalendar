@@ -25,6 +25,9 @@ Installation:
 - Put your iCal files into the directory you specify in config.inc.php
   (default is "calendars")
 - Make sure PHP is enabled (http://developer.apple.com/internet/macosx/php.html)
+- PHP 8.0 or later is required.
+- The XML extension is required for WebDAV and CalDAV requests. The iconv
+  extension is required when converting non-UTF-8 WebDAV property text.
 - Turn on Web sharing (if not already on)
 - View calendars in your web browser
   If it is in your Sites folder, the URL would be:
@@ -88,6 +91,8 @@ COPYING for more information about our license.
 
 Changes:
 --------
+3.0
+    Strongly AI (Windsurf Cascade / ChatGPT) assisted port from PHP 5 to PHP 8 (including used libs)
 2.4.1
 	New features:
 		Week day count can now be separatly configured for month views, so

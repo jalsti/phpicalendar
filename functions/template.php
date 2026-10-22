@@ -90,8 +90,8 @@ class Page {
 							$location 		= sanitizeForWeb(stripslashes(urldecode($new_val2['location'])));
 							$description 	= sanitizeForWeb(stripslashes(urldecode($new_val2['description'])));
 							if (!empty($description)) {
-								$description = ereg_replace('(blocked)?([[:alpha:]]+://([^<>&[:space:]]|&amp;)+[[:alnum:]/])', '<a target="_new" href="\2">\2</a>', $description);
-								$description = ereg_replace('(blocked)?(mailto:)?([[:alnum:]_.%+-]+@[[:alnum:].-]+\.[[:alpha:]]{2,4})', '<a href="mailto:\3">\3</a>', $description);
+								$description = preg_replace('/(blocked)?([a-zA-Z]+:\/\/([^<>&[:space:]]|&amp;)+[a-zA-Z0-9]\/)/', '<a target="_new" href="\2">\2</a>', $description);
+								$description = preg_replace('/(blocked)?(mailto:)?([a-zA-Z0-9_.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/', '<a href="mailto:\3">\3</a>', $description);
 							}
 
 							$event_start 	= $new_val2['event_start'];
@@ -392,7 +392,7 @@ class Page {
 			$key = mktime($regs_tmp[1],$regs_tmp[2],0,$this_month,$this_day,$this_year);
 			$key = date ($timeFormat, $key);
 
-			if (ereg('([0-9]{1,2}):00', $key)) {
+			if (preg_match('/([0-9]{1,2}):00/', $key)) {
 				$even_row = '2';
 				# column of times colspan = 4 to cover navigation links at top
 				$weekdisplay .= '<tr>';
@@ -405,7 +405,7 @@ class Page {
 				$weekdisplay .= '<td bgcolor="#a1a5a9" width="1" height="' . $phpiCal_config->gridLength . '"></td>';
 			} else {
 				$even_row = '';
-				if (ereg('([0-9]{1,2}):30', $key)) $even_row = '3';
+				if (preg_match('/([0-9]{1,2}):30/', $key)) $even_row = '3';
 				# empty row for each gridLength, to the right of times and left of first weekday
 				$weekdisplay .= '<tr>';
 				$weekdisplay .= '<td bgcolor="#a1a5a9" width="1" height="' . $phpiCal_config->gridLength . '"></td>';
@@ -442,7 +442,7 @@ class Page {
 						}
 						$j++;
 					}
-					if ($j == sizeof(@$event_length[$thisday])) {
+					if ($j == sizeof(@$event_length[$thisday] ?? [])) {
 						$event_length[$thisday][] = array ('length' => ($drawEvent['draw_length'] / $phpiCal_config->gridLength), 'key' => $eventKey, 'overlap' => $loopevent['event_overlap'],'state' => 'begin');
 					}
 				}
@@ -1158,7 +1158,7 @@ HEREDOC;
 
 	}
 
-	function Page($file = 'std.tpl') {
+	function __construct($file = 'std.tpl') {
 		global $phpiCal_config;
 		if (!file_exists($file)){
 			#look for it in default if not found

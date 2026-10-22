@@ -92,7 +92,7 @@ function resolve_path($url, $rel_path) {
 	);
 
 	$rel_path = str_replace('\\', '/', $rel_path);
-	if ($rel_path{0} == '/') {
+	if ($rel_path[0] == '/') {
 		// Absolute path
 		return $uri['proto'] . '://' . $auth . $uri['host'] . $uri['port'] . $rel_path;
 	}
@@ -165,8 +165,8 @@ function dayCompare($now, $then) {
 // function to compare to dates in Ymd and return the number of months 
 // that differ between them.
 function monthCompare($now, $then) {
-	ereg ("([0-9]{4})([0-9]{2})([0-9]{2})", $now, $date_now);
-	ereg ("([0-9]{4})([0-9]{2})([0-9]{2})", $then, $date_then);
+	preg_match ("/([0-9]{4})([0-9]{2})([0-9]{2})/", $now, $date_now);
+	preg_match ("/([0-9]{4})([0-9]{2})([0-9]{2})/", $then, $date_then);
 	$diff_years = $date_now[1] - $date_then[1];
 	$diff_months = $date_now[2] - $date_then[2];
 	if ($date_now[2] < $date_then[2]) {
@@ -179,8 +179,8 @@ function monthCompare($now, $then) {
 }
 
 function yearCompare($now, $then) {
-	ereg ("([0-9]{4})([0-9]{2})([0-9]{2})", $now, $date_now);
-	ereg ("([0-9]{4})([0-9]{2})([0-9]{2})", $then, $date_then);
+	preg_match ("/([0-9]{4})([0-9]{2})([0-9]{2})/", $now, $date_now);
+	preg_match ("/([0-9]{4})([0-9]{2})([0-9]{2})/", $then, $date_then);
 	$diff_years = $date_now[1] - $date_then[1];
 	return $diff_years;
 }
@@ -310,7 +310,7 @@ function openevent($event_date, $time, $uid, $arr, $lines = 0, $length = 0, $lin
 	# build tooltip
 	$title = makeTitle($arr, $time);
 	# for iCal pseudo tag <http> comptability
-	if (ereg('<([[:alpha:]]+://)([^<>[:space:]]+)>',$event_text,$matches)) {
+	if (preg_match('/<([a-zA-Z]+:\/\/)([^<>[:space:]]+)>/',$event_text,$matches)) {
 		$full_event_text = $matches[1] . $matches[2];
 		$event_text = $matches[2];
 	} else {
@@ -326,7 +326,7 @@ function openevent($event_date, $time, $uid, $arr, $lines = 0, $length = 0, $lin
 			$event_text = word_wrap($event_text, $length, $lines);
 		}
 
-		if ((!(ereg('([[:alpha:]]+://[^<>[:space:]]+)', $full_event_text, $res))) || ($arr['description'])) {
+		if ((!(preg_match('/([a-zA-Z]+:\/\/[^<>[:space:]]+)/', $full_event_text, $res))) || ($arr['description'])) {
 			$escaped_date = addslashes($event_date);
 			$escaped_time = addslashes($time);
 			$escaped_uid  = addslashes($uid);
@@ -374,9 +374,9 @@ function extractDateTime($data, $property, $field) {
 	}
 	
 	// Extract date-only values.
-	if ((preg_match('/^'.$property.';VALUE=DATE:/i', $field)) || (ereg ('^([0-9]{4})([0-9]{2})([0-9]{2})$', $data)))  {
+	if ((preg_match('/^'.$property.';VALUE=DATE:/i', $field)) || (preg_match ('/^([0-9]{4})([0-9]{2})([0-9]{2})$/', $data)))  {
 		// Pull out the date value. Minimum year is 1970.
-		ereg ('([0-9]{4})([0-9]{2})([0-9]{2})', $data, $dt_check);
+		preg_match ('/([0-9]{4})([0-9]{2})([0-9]{2})/', $data, $dt_check);
 		if ($dt_check[1] < 1970) { 
 			$dt_check[1] = '1970';
 		}		

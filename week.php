@@ -18,7 +18,7 @@ switch ($phpiCal_config->minical_view) {
 $starttime 			= "0500";
 $weekstart 			= 1;
 $unix_time 			= strtotime($getdate);
-$today_today        = date('Ymd', time() + $phpiCal_config->second_offset); 
+$today_today        = date('Ymd', time() + (int)$phpiCal_config->second_offset); 
 $next_week 			= date("Ymd", strtotime("+1 week",  $unix_time));
 $prev_week 			= date("Ymd", strtotime("-1 week",  $unix_time));
 $next_day			= date('Ymd', strtotime("+1 day",  $unix_time));
@@ -37,7 +37,7 @@ $display_date .= " (".$lang['l_week']." #$week)";
 $sidebar_date 		= localizeDate($dateFormat_week_list, $unix_time);
 
 // For the side months
-ereg ("([0-9]{4})([0-9]{2})([0-9]{2})", $getdate, $day_array2);
+preg_match ("/([0-9]{4})([0-9]{2})([0-9]{2})/", $getdate, $day_array2);
 $this_day 	= $day_array2[3]; 
 $this_month = $day_array2[2];
 $this_year 	= $day_array2[1];

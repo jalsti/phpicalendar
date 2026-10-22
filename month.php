@@ -16,7 +16,7 @@ switch ($phpiCal_config->minical_view) {
 }
 
 $unix_time 				= strtotime($getdate);
-$today_today 			= date('Ymd', time() + $phpiCal_config->second_offset); 
+$today_today 			= date('Ymd', time() + (int)$phpiCal_config->second_offset); 
 $tomorrows_date 		= date('Ymd', strtotime("+1 day",  $unix_time));
 $yesterdays_date 		= date('Ymd', strtotime("-1 day",  $unix_time));
 $sidebar_date 			= localizeDate($dateFormat_week_list, $unix_time);

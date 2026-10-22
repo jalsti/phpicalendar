@@ -78,10 +78,7 @@ function flatten_ol_blocks($event_date, $ol_blocks, $new_block_key) {
 	// Loop block = each other block in the array, the ones we're merging into new block.
 	// New block = the changed block that caused the flatten_ol_blocks call. Everything gets merged into this.
 	$new_block = $ol_blocks[$new_block_key];
-	reset($ol_blocks);
-	while ($loop_block_array = each($ol_blocks)) {
-		$loop_block_key = $loop_block_array['key'];
-		$loop_block = $loop_block_array['value'];
+	foreach ($ol_blocks as $loop_block_key => $loop_block) {
 		// only compare with other blocks
 		if ($loop_block_key != $new_block_key) {
 			// check if blocks overlap
@@ -100,7 +97,6 @@ function flatten_ol_blocks($event_date, $ol_blocks, $new_block_key) {
 					$master_array[$event_date][$event['time']][$event['key']]['event_overlap'] = $ol_blocks[$new_block_key]['maxOverlaps'];
 				}
 				unset($ol_blocks[$loop_block_key]);
-				reset($ol_blocks);
 			}
 		} 
 	}

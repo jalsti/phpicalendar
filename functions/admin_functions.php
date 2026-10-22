@@ -118,8 +118,8 @@ function delete_cal ($filename) {
 		#$filename = $calendar_path . "/" . $filename;
 		$delete = unlink($filename); 
 		clearstatcache();
-		if (@file_exists($filename)) { 
-			$filesys = eregi_replace("/","\\", $filename); 
+		if (@file_exists($filename)) {
+			$filesys = str_replace("/", "\\", $filename);
 			$delete = system("rm -f $filesys");
 			clearstatcache();
 			if (@file_exists($filename)) { 
@@ -229,8 +229,8 @@ function is_uploaded_file_v4 ($filename) {
     // For Windows compat
     $filename = str_replace ("\\", "/", $filename);
     $tmp_file = str_replace ("\\", "/", $tmp_file);
-    // User might have trailing slash in php.ini... 
-    return (ereg_replace('/+', '/', $tmp_file) == $filename);
+    // User might have trailing slash in php.ini...
+    return (preg_replace('/\/+/', '/', $tmp_file) == $filename);
 }
 
 // return the appropriate error message if the file upload had an error

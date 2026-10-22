@@ -7,7 +7,7 @@
  *
  * Long description for file (if any)...
  *
- * PHP versions 4 & 5
+ * PHP 8 and later
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -25,8 +25,8 @@
  * @see HTTP_WebDAV_Server
  */
 
-require_once 'Tools/ReportParser.php';
-require_once 'Tools/ICalendarParser.php';
+require_once __DIR__ . '/Tools/ReportParser.php';
+require_once __DIR__ . '/Tools/ICalendarParser.php';
 
 /**
  * CalDav Server class
@@ -53,7 +53,7 @@ class HTTP_CalDAV_Server extends HTTP_WebDAV_Server
      *               string property name
      *               string property value
      */
-    function calDavProp($name, $value=null, $status=null) {
+    public function calDavProp($name, $value=null, $status=null) {
         return $this->mkprop('urn:ietf:params:xml:ns:caldav', $name, $value,
             $status);
     }
@@ -178,7 +178,7 @@ class HTTP_CalDAV_Server extends HTTP_WebDAV_Server
                     '404 Not Found');
             }
 
-            return HTTP_CalDAV_Server::calDavProp('calendar-data',
+            return $this->calDavProp('calendar-data',
                 $parser->comps[count($parser->comps) - 1]);
         }
 

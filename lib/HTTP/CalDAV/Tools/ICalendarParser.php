@@ -7,7 +7,7 @@
  *
  * Long description for file (if any)...
  *
- * PHP versions 4 & 5
+ * PHP 8 and later
  *
  * LICENSE: This source file is subject to version 3.0 of the PHP license
  * that is available through the world-wide-web at the following URI:
@@ -151,7 +151,7 @@ class ICalendarParser
      * @param resource input stream handle
      * @access public
      */
-    function ICalendarParser($handle, $offsets=null, $value=null, $filters=null)
+    function __construct($handle, $offsets=null, $value=null, $filters=null)
     {
         $this->_handle = $handle;
         $this->_offsetStack[] = $offsets;
