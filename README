@@ -88,6 +88,21 @@ COPYING for more information about our license.
 
 Changes:
 --------
+2.4.1
+	New features:
+		Week day count can now be separatly configured for month views, so
+			that each line can start with the same day in month views even
+			if your large week view has more then 7 days
+
+		Week numbers are now showing up in week and/or months views, if configured
+		The day at which the week starts in the week view can now be configured to a
+			dynamic 'today' or 'yesterday'
+		The day at which the week starts can now be configured seperately for month
+			views. If the first day is not the left most day in the row it will be
+			highlighted through CSS
+			(Note: first day of week for month views should be configured as Monday,
+			 if you want to have week numbers shown and only one week number for
+			 each line)
 2.4
 	Security fixes:
 		More ICS input sanitizing; prevent HTML/XSS injection

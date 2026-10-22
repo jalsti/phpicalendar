@@ -65,6 +65,7 @@ table, td {font: 11px Verdana, Arial, sans-serif; color: #000;}
 .monthon		{ background-color: #F2F9FF; height: 105px; width: 105px; text-align: left;  vertical-align: top; }
 .montheventtop	{ background-image: url(images/side_bg.gif); border-top: 1px solid #A1A5A9; }
 .montheventline	{ border-right: 1px dotted #A1A5A9; }
+.weekstart		{ color:red !important; border-left: 1px solid black; display:block; width:99%; height:100%; }
 
 /* Year View */
 

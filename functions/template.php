@@ -954,7 +954,7 @@ HEREDOC;
 		$dateFormat_month_local = str_replace('%Y', '<a class="ps3" href="year.php?cal='.$cal.'&amp;getdate='.$first_of_year.'">%Y</a>', $dateFormat_month_local);
 
 		//$start_day 			= strtotime($phpiCal_config->week_start_day);
-		$start_day			= strtotime(dateOfWeek($getdate, $phpiCal_config->week_start_day));
+		$start_day			= strtotime(dateOfWeek($getdate, $phpiCal_config->week_start_day_month));
 		$month_title 		= localizeDate ($dateFormat_month_local, $fake_getdate_time);
 		$month_date 		= date ('Ymd', $fake_getdate_time);
 
@@ -968,15 +968,17 @@ HEREDOC;
 
 		$weekday_loop = '';
 		$middle = '';
-		for ($i=0; $i< $phpiCal_config->week_length; $i++) {
+		for ($i=0; $i< $phpiCal_config->week_length_month; $i++) {
 			$day_num 		= date('w', $start_day);
 			$weekday 		= $langtype[$day_num];
 			$start_day 		= strtotime('+1 day', $start_day);
 			$loop_tmp 		= str_replace('{LOOP_WEEKDAY}', $weekday, $loop_wd);
 			$weekday_loop  .= $loop_tmp;
 		}
+		if ($phpiCal_config->show_week_no_month == 'yes')
+			$weekday_loop .= '<td class="yearweek monthnumber_title">#</td>';
 
-		$start_day 			= strtotime(dateOfWeek($first_of_month, $phpiCal_config->week_start_day));
+		$start_day 			= strtotime(dateOfWeek($first_of_month, $phpiCal_config->week_start_day_month, true));
 		$i 					= 0;
 		$whole_month 		= TRUE;
 
@@ -988,6 +990,7 @@ HEREDOC;
 			$daylink 				= date ('Ymd', $start_day);
 			$switch['DAY']	 		= date ('j', $start_day);
 			$switch['DAYLINK'] 		= date ('Ymd', $start_day);
+			
 			if ($check_month != $minical_month) {
 				$temp = $t_month[0];
 			} elseif ($daylink == $getdate) {
@@ -996,7 +999,7 @@ HEREDOC;
 				$temp = $t_month[2];
 			}
 			$switch['ALLDAY'] = $switch['EVENT'] = '';
-			if (isset($master_array[$daylink]) && $i <= $phpiCal_config->week_length) {
+			if (isset($master_array[$daylink]) && $i <= $phpiCal_config->week_length_month) {
 				if ($type != 'small') {
 					foreach ($master_array[$daylink] as $cal_time => $event_times) {
 						foreach ($event_times as $uid => $val) {
@@ -1031,6 +1034,14 @@ HEREDOC;
 					}
 				}
 			}
+			// add class name for day which start a week
+			if($phpiCal_config->show_week_no_month == 'yes' && 
+				date('W', strtotime('+0 day', $start_day)) != date('W', strtotime('-1 day', $start_day))
+				&&
+				date('l', strtotime('+0 day', $start_day)) != $phpiCal_config->week_start_day_month
+				){
+				$switch['DAY'] = '<span class="weekstart">'.$switch['DAY'].'</span>';
+			}
 
 			$switch['EVENT'] = (isset($switch['EVENT'])) ? $switch['EVENT'] : '';
 			$switch['ALLDAY'] = (isset($switch['ALLDAY'])) ? $switch['ALLDAY'] : '';
@@ -1043,15 +1054,29 @@ HEREDOC;
 			$middle .= $temp;
 
 			$start_day = strtotime('+1 day', $start_day);
-			if ($i == $phpiCal_config->week_length) {
-				if ($phpiCal_config->week_length != 7) {
-					$start_day = strtotime('+'.(7-$phpiCal_config->week_length).' day', $start_day);
+			if ($i == $phpiCal_config->week_length_month) {
+				if ($phpiCal_config->week_length_month != 7) {
+					$start_day = strtotime('+'.(7-$phpiCal_config->week_length_month).' day', $start_day);
 				}
 				$i = 0;
+				if ($phpiCal_config->show_week_no_month == 'yes'){
+					$last_of_week=strtotime('-1 day', $start_day);
+					$week_link = '<a class="psf monthnumber_link" href="week.php?cal='.$cal.'&amp;getdate='.
+									date ('Ymd', $last_of_week).'">'.date ('W', $last_of_week).'</a>';
+					if( date('d', $last_of_week) < 7 && 
+						date('W', strtotime('+0 day', $last_of_week)) != date('W', strtotime('-6 day', $last_of_week))) {
+						$last_of_last_week=strtotime('-6 day', $last_of_week);
+						$week_link = '&nbsp;<a class="psf monthnumber_link" href="week.php?cal='.$cal.'&amp;getdate='.
+									date ('Ymd', $last_of_last_week).'">'.date ('W', $last_of_last_week).'</a>'.
+									'&nbsp;/&nbsp;'.$week_link;
+					}
+					$middle .= '<td class="yearweek monthnumber">'.$week_link.'</td>';
+				}
 				$middle .= $endweek;
 				$checkagain = date ('m', $start_day);
 				if ($checkagain != $minical_month) $whole_month = FALSE;
 			}
+
 		} while ($whole_month == TRUE);
 
 		$return = str_replace('<!-- loop weekday on -->'.$match1[1].'<!-- loop weekday off -->', $weekday_loop, $template_p);

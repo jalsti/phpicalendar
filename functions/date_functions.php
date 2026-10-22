@@ -118,10 +118,14 @@ function two2threeCharDays($day, $txt=true) {
 
 // dateOfWeek() takes a date in Ymd and a day of week in 3 letters or more
 // and returns the date of that day. (ie: "sun" or "sunday" would be acceptable values of $day but not "su")
-function dateOfWeek($Ymd, $day) {
+function dateOfWeek($Ymd, $day, $calcForMonth = false) {
 	global $phpiCal_config;
 	$week_start_day = 'Sunday';
-	if (isset($phpiCal_config->week_start_day)) $week_start_day = $phpiCal_config->week_start_day;
+	if( $calcForMonth === false){
+		if (isset($phpiCal_config->week_start_day)) $week_start_day = $phpiCal_config->week_start_day;
+	} else {
+		if (isset($phpiCal_config->week_start_day_month)) $week_start_day = $phpiCal_config->week_start_day_month;
+	}
 	$timestamp = strtotime($Ymd);
 	$num = date('w', strtotime($week_start_day));
 	$start_day_time = strtotime((date('w',$timestamp)==$num ? "$week_start_day" : "last $week_start_day"), $timestamp);

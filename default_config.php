@@ -15,8 +15,12 @@ class Configs{
 		$this->minical_view 			= 'current';		// Where do the mini-calendars go when clicked? = 'day', 'week', 'month', 'current'
 		$this->default_cal 				= $this->ALL_CALENDARS_COMBINED;		// Exact filename of calendar without .ics. Or set to $this->ALL_CALENDARS_COMBINED to open all calenders combined into one.
 		$this->language 				= 'English';		// Language support - 'English', 'Polish', 'German', 'French', 'Dutch', 'Danish', 'Italian', 'Japanese', 'Norwegian', 'Spanish', 'Swedish', 'Portuguese', 'Catalan', 'Traditional_Chinese', 'Esperanto', 'Korean'
-		$this->week_start_day 			= 'Sunday';			// Day of the week your week starts on
+		$this->week_start_day 			= 'Monday';			// Day of the week your week starts on
 		$this->week_length				= '7';				// Number of days to display in the week view
+		$this->week_start_day_month 	= $this->week_start_day;// Day of the week your week starts on - seperate config for month-view
+		$this->week_length_month		= $this->week_length;	// Number of days to display in the week view - seperate config for month-view
+		$this->show_week_no         	= 'yes';            // show week number in week view
+		$this->show_week_no_month   	= 'yes';            // show week number in month view
 		$this->day_start 				= '0600';			// Start time for day grid
 		$this->day_end					= '2000';			// End time for day grid
 		$this->gridLength 				= '15';				// Grid distance in minutes for day view, multiples of 15 preferred

@@ -28,6 +28,12 @@ $end_week_time 		= $start_week_time + (($phpiCal_config->week_length - 1) * 25 *
 $start_week 		= localizeDate($dateFormat_week, $start_week_time);
 $end_week 			= localizeDate($dateFormat_week, $end_week_time);
 $display_date 		= "$start_week - $end_week";
+$week = date ('W', $end_week_time);
+if( date('W', strtotime('+0 day', $start_week_time)) != date('W', strtotime('+0 day', $end_week_time))) {
+	$last_of_last_week=strtotime('+0 day', $start_week_time);
+	$week = '&nbsp;'.date ('W', $last_of_last_week).'&nbsp;/&nbsp;'.$week;
+}
+$display_date .= " (".$lang['l_week']." #$week)";
 $sidebar_date 		= localizeDate($dateFormat_week_list, $unix_time);
 
 // For the side months
