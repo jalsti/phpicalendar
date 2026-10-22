@@ -35,6 +35,7 @@ $lang['l_all_day'] 			= 'Ev&eacute;nements de ce jour';
 $lang['l_notes'] 			= 'Notes';
 $lang['l_this_years'] 		= 'Ev&eacute;nements de cette ann&eacute;e';
 $lang['l_today'] 			= 'Aujourd\'hui';
+$lang['l_yesterday'] 		= 'Hier';
 $lang['l_this_week'] 		= 'Cette semaine';
 $lang['l_this_month'] 		= 'Ce mois';
 $lang['l_jump'] 			= 'Voir';

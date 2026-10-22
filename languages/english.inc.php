@@ -33,6 +33,7 @@ $lang['l_all_day'] 			= 'All day event';
 $lang['l_notes'] 			= 'Notes';
 $lang['l_this_years'] 		= 'This Year\'s Events';
 $lang['l_today'] 			= 'Today';
+$lang['l_yesterday'] 		= 'Yesterday';
 $lang['l_this_week'] 		= 'This Week';
 $lang['l_this_month'] 		= 'This Month';
 $lang['l_jump'] 			= 'Jump to';

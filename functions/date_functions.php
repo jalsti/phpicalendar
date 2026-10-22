@@ -126,6 +126,16 @@ function dateOfWeek($Ymd, $day, $calcForMonth = false) {
 	} else {
 		if (isset($phpiCal_config->week_start_day_month)) $week_start_day = $phpiCal_config->week_start_day_month;
 	}
+	if (strtolower((string)$week_start_day) == 'today') {
+		$week_start_day = date('l');
+	} elseif (strtolower((string)$week_start_day) == 'yesterday') {
+		$week_start_day = date('l', strtotime('-1 day'));
+	}
+	if (strtolower((string)$day) == 'today') {
+		$day = date('l');
+	} elseif (strtolower((string)$day) == 'yesterday') {
+		$day = date('l', strtotime('-1 day'));
+	}
 	$timestamp = strtotime($Ymd);
 	$num = date('w', strtotime($week_start_day));
 	$start_day_time = strtotime((date('w',$timestamp)==$num ? "$week_start_day" : "last $week_start_day"), $timestamp);

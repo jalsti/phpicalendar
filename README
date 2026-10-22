@@ -91,6 +91,14 @@ COPYING for more information about our license.
 
 Changes:
 --------
+3.0.1
+    Theme changes:
+        misc color changes
+    New features:
+        yesterday and today options for week_start_day in preferences
+    Bug fixes:
+        misc missing translation keys in preferences
+
 3.0
     Strongly AI (Windsurf Cascade / ChatGPT) assisted port from PHP 5 to PHP 8 (including used libs)
 2.4.1

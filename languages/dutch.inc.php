@@ -33,6 +33,7 @@ $lang['l_all_day'] 			= 'Dagactiviteit';
 $lang['l_notes'] 			= 'Opmerkingen';
 $lang['l_this_years'] 		= 'Activiteiten dit Jaar';
 $lang['l_today'] 			= 'Vandaag';
+$lang['l_yesterday'] 		= 'Gisteren';
 $lang['l_this_week'] 		= 'Deze Week';
 $lang['l_this_month'] 		= 'Deze Maand';
 $lang['l_jump'] 			= 'Ga naar';
@@ -65,9 +66,12 @@ $lang['l_no_query']			= 'Geen zoekopdracht gegeven';
 $lang['l_preferences']		= 'Voorkeuren';
 $lang['l_printer']			= 'Printer';
 $lang['l_select_lang']		= 'Selecteer jouw standaard Taal';
+$lang['l_select_timezone']	= 'Selecteer jouw standaard tijdzone';
 $lang['l_select_cal']		= 'Selecteer jouw standaard Kalender';
 $lang['l_select_view']		= 'Selecteer jouw standaard View';
 $lang['l_select_time']		= 'Selecteer jouw standaard Start Tijd';
+$lang['l_select_endtime']	= 'Selecteer jouw standaard eindtijd';
+$lang['l_select_timeformat']= 'Selecteer jouw standaard tijdformaat (AM/PM)';
 $lang['l_select_day']		= 'Selecteer jouw standaard Start Weekdag';
 $lang['l_select_style']		= 'Selecteer jouw standaard Stijl';
 $lang['l_set_prefs']		= 'Stel voorkeuren in';
@@ -176,6 +180,7 @@ $dateFormat_week_list = '%a, %e %b';
 $dateFormat_week_jump = '%e %b';
 $dateFormat_month = '%B %Y';
 $dateFormat_month_list = '%A, %e %B';
+$dateFormat_year = '%Y';
 
 /*
 Notes about dateFormat_*

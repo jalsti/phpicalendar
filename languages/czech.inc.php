@@ -33,6 +33,7 @@ $lang['l_all_day'] 			= 'Celodenní událost';
 $lang['l_notes'] 			= 'Poznámky';
 $lang['l_this_years'] 		= 'Události v tomto roce';
 $lang['l_today'] 			= 'Dnes';
+$lang['l_yesterday'] 		= 'Včera';
 $lang['l_this_week'] 		= 'Tento týden';
 $lang['l_this_month'] 		= 'Tento Month';
 $lang['l_jump'] 			= 'Přejít na';

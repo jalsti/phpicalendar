@@ -20,6 +20,7 @@ if (isset($_GET['action'])) {
 } 
 
 $startdays = array ('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+$startday_values = array_merge(array('today', 'yesterday'), $startdays);
 
 if ($action == 'setcookie') { 
 	$cookie_language 	= urldecode($_POST['cookie_language']);
@@ -27,7 +28,9 @@ if ($action == 'setcookie') {
 	$cookie_calendar 	= $_POST['cookie_calendar'];
 	$cookie_view 		= $_POST['cookie_view'];
 	$cookie_style 		= $_POST['cookie_style'];
-	$cookie_startday	= $_POST['cookie_startday'];
+	$cookie_startday	= in_array($_POST['cookie_startday'], $startday_values, true)
+		? $_POST['cookie_startday']
+		: $phpiCal_config->week_start_day;
 	$cookie_time		= $_POST['cookie_time'];
 	$cookie_timeformat	= urldecode($_POST['cookie_timeformat']);
 	$cookie_endtime		= $_POST['cookie_endtime'];
@@ -54,8 +57,15 @@ if ($action == 'setcookie') {
 			$phpiCal_config->default_view = $_POST['cookie_view'];
 		if (isset($_POST['cookie_style']) && is_dir(BASE.'templates/'.$_POST['cookie_style'].'/')) 
 			$phpiCal_config->template = $_POST['cookie_style'];
-		if (isset($_POST['cookie_language']) && is_file(BASE.'languages/'.strtolower($_POST['cookie_language']).'.inc.php')) 
-			include(BASE.'languages/'.strtolower($_POST['cookie_language']).'.inc.php');
+		$selected_language = strtolower($cookie_language);
+		$selected_language_file = BASE.'languages/'.$selected_language.'.inc.php';
+		if (is_file($selected_language_file)) {
+			unset($lang);
+			include(BASE.'languages/english.inc.php');
+			include($selected_language_file);
+			$language = $selected_language;
+			$phpiCal_config->language = $cookie_language;
+		}
 	}
 	$_COOKIE[$cookie_name] = $the_cookie;
     $cpath = $cookie_cpath;
@@ -167,15 +177,17 @@ foreach ($timeformat_arr as $i => $s) {
 }
 
 // select for day of week
-$i=0;
 $startday_select = '';
-foreach ($daysofweek_lang as $daysofweek) {
-	if ($startdays[$i] == $cookie_startday) {
-		$startday_select .= '<option value="'.$startdays[$i].'" selected="selected">'.$daysofweek.'</option>';
-	} else {
-		$startday_select .= '<option value="'.$startdays[$i].'">'.$daysofweek.'</option>';
-	}
-	$i++;
+$startday_labels = array(
+	'today' => $lang['l_today'],
+	'yesterday' => $lang['l_yesterday']
+);
+foreach ($startday_values as $startday) {
+	$label = isset($startday_labels[$startday])
+		? $startday_labels[$startday]
+		: $daysofweek_lang[array_search($startday, $startdays, true)];
+	$selected = strtolower((string)$cookie_startday) == $startday ? ' selected="selected"' : '';
+	$startday_select .= '<option value="'.$startday.'"'.$selected.'>'.$label.'</option>';
 }
 
 $timezone_subset = array(

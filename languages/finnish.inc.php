@@ -35,6 +35,7 @@ $lang['l_all_day']		= 'Koko p&auml;iv&auml;n tapahtuma';
 $lang['l_notes']		= 'Muistiinpanot';
 $lang['l_this_years']		= 'T&auml;m&auml;n Vuoden tapahtumat';
 $lang['l_today']		= 'T&auml;n&auml;&auml;n';
+$lang['l_yesterday']		= 'Eilen';
 $lang['l_this_week']		= 'T&auml;m&auml; Viikko';
 $lang['l_this_month']		= 'T&auml;m&auml; Kuukausi';
 $lang['l_jump']			= 'Siirry';
@@ -70,6 +71,9 @@ $lang['l_select_lang']		= 'Valitse oletuskieli:';
 $lang['l_select_cal']		= 'Valitse oletuskalenteri:';
 $lang['l_select_view']		= 'Valitse oletusn&auml;kym&auml;:';
 $lang['l_select_time']		= 'Valitse oletusaloitusaika:';
+$lang['l_select_timezone']	= 'Valitse oletusaikavy&ouml;hyke:';
+$lang['l_select_endtime']	= 'Valitse oletusp&auml;&auml;ttymisaika:';
+$lang['l_select_timeformat']= 'Valitse oletusaikamuoto (AM/PM):';
 $lang['l_select_day']		= 'Valitse oletusaloitusp&auml;iv&auml; viikolle:';
 $lang['l_select_style']		= 'Valitse oletustyyli:';
 $lang['l_t_prefs']		= 'Aseta ominaisuudet';
@@ -183,6 +187,7 @@ $dateFormat_week_list 	= '%a, %e %b';
 $dateFormat_week_jump 	= '%b %e';
 $dateFormat_month 	= '%B %Y';
 $dateFormat_month_list 	= '%A, %B %e';
+$dateFormat_year = '%Y';
 
 /*
 Notes about dateFormat_*
