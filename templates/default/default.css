@@ -10,11 +10,11 @@ table, td {font: 11px Verdana, Arial, sans-serif; color: #000;}
 
 .alldaybg_1 {background: #50739B url(images/allday_1.gif) repeat-x; border-bottom: 1px solid #3C6080; min-height: 18px; padding-top: 5px; text-align: center;}
 .alldaybg_2 {background: #53AB63 url(images/allday_2.gif) repeat-x; border-bottom: 1px solid #409050; min-height: 18px; padding-top: 5px; text-align: center;}
-.alldaybg_3 {background: #FF592A url(images/allday_3.gif) repeat-x; border-bottom: 1px solid #E0401C; min-height: 18px; padding-top: 5px; text-align: center;}
-.alldaybg_4 {background: #BE55AD url(images/allday_4.gif) repeat-x; border-bottom: 1px solid #984080; min-height: 18px; padding-top: 5px; text-align: center;}
-.alldaybg_5 {background: #FF2B2A url(images/allday_5.gif) repeat-x; border-bottom: 1px solid #D01C18; min-height: 18px; padding-top: 5px; text-align: center;}
-.alldaybg_6 {background: #BA900C url(images/allday_6.gif) repeat-x; border-bottom: 1px solid #A07400; min-height: 18px; padding-top: 5px; text-align: center;}
-.alldaybg_7 {background: #959595 url(images/allday_7.gif) repeat-x; border-bottom: 1px solid #888888; min-height: 18px; padding-top: 5px; text-align: center;}
+.alldaybg_6 {background: #bddeed url(images/allday_6.gif) repeat-x; border-bottom: 1px solid #8dc0d9; min-height: 18px; padding-top: 5px; text-align: center;}
+.alldaybg_7 {background: #BE55AD url(images/allday_7.gif) repeat-x; border-bottom: 1px solid #984080; min-height: 18px; padding-top: 5px; text-align: center;}
+.alldaybg_3 {background: #FF2B2A url(images/allday_3.gif) repeat-x; border-bottom: 1px solid #D01C18; min-height: 18px; padding-top: 5px; text-align: center;}
+.alldaybg_5 {background: #BA900C url(images/allday_5.gif) repeat-x; border-bottom: 1px solid #A07400; min-height: 18px; padding-top: 5px; text-align: center;}
+.alldaybg_4 {background: #727272 url(images/allday_4.gif) repeat-x; border-bottom: 1px solid #595959; min-height: 18px; padding-top: 5px; text-align: center;}
 
 .rowOn			{ background-color: #B0E8B0; border-top: 1px solid #fff; border-left: 1px solid #fff; }
 .rowOn2			{ background-color: #B0E8B0; border-top: 1px solid #fff; }
@@ -27,22 +27,22 @@ table, td {font: 11px Verdana, Arial, sans-serif; color: #000;}
 /* Styles for day and week events */
 .eventbg_1	 	{ background-color: #557CA3; padding: 2px;}
 .eventbg_2	 	{ background-color: #53A062; padding: 2px;}
-.eventbg_3	 	{ background-color: #E84F25; padding: 2px;}
+.eventbg_7	 	{ background-color: #E84F25; padding: 2px;}
 .eventbg_4	 	{ background-color: #B257A2; padding: 2px;}
-.eventbg_5	 	{ background-color: #D42020; padding: 2px;}
-.eventbg_6	 	{ background-color: #B88F0B; padding: 2px;}
-.eventbg_7	 	{ background-color: #73738C; padding: 2px;}
+.eventbg_3	 	{ background-color: #D42020; padding: 2px;}
+.eventbg_5	 	{ background-color: #B88F0B; padding: 2px;}
+.eventbg_6	 	{ background-color: #8dc0d9; padding: 2px;}
 
 .allday a		{ font-size: 9px; color: #fff !important; font-weight: 900; text-decoration:none;}
 .allday a:hover	{ text-decoration:underline;}
 
 .eventbg2_1	 		{ background-color: #6699CC; border: 1px solid #557CA3; }
 .eventbg2_2	 		{ background-color: #4FC464; border: 1px solid #53A062; }
-.eventbg2_3	 		{ background-color: #FF6D3B; border: 1px solid #E84F25; }
-.eventbg2_4	 		{ background-color: #EA62D4; border: 1px solid #B257A2; }
-.eventbg2_5	 		{ background-color: #FF5E56; border: 1px solid #D42020; }
-.eventbg2_6	 		{ background-color: #CCB21F; border: 1px solid #B88F0B; }
-.eventbg2_7	 		{ background-color: #9292A1; border: 1px solid #73738C; }
+.eventbg2_7	 		{ background-color: #FF6D3B; border: 1px solid #E84F25; }
+.eventbg2_4	 		{ background-color: #727272; border: 1px solid #595959; }
+.eventbg2_3	 		{ background-color: #FF5E56; border: 1px solid #D42020; }
+.eventbg2_5	 		{ background-color: #CCB21F; border: 1px solid #B88F0B; }
+.eventbg2_6	 		{ background-color: #bddeed; border: 1px solid #8dc0d9; }
 
 .dayborder 		{ background-color: #fff; border-top: 1px solid #A1A5A9; }
 .dayborder2 	{ background-color: #fff; border-top: 1px dashed #ccc; }
@@ -120,10 +120,10 @@ a.ps3:hover		{ color: #000; text-decoration: underline; }
 
 /* This is the link style for events */
 a.ps			{ text-decoration:	none; }
-a.ps:link		{ color: #fff; }
-a.ps:visited	{ color: #fff; }
-a.ps:active		{ color: #fff; }
-a.ps:hover		{ color: #fff; text-decoration: underline; }
+a.ps:link		{ color: #222; }
+a.ps:visited	{ color: #222; }
+a.ps:active		{ color: #222; }
+a.ps:hover		{ color: #222; text-decoration: underline; }
 
 /* Body attributes */
 
