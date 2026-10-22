@@ -11,6 +11,14 @@ The commented out lines below include alternatives to the default settings.  Add
 For more info and help, go to http://phpicalendar.net or email phpicalendar@gmail.com
 */
 
+
+$yesterday = date('l',time() - (1 * 24 * 60 * 60));
+$today = date('l');
+// for config below: Day of the week your week starts on
+$startday  = $yesterday;    // one of $yesterday, $today, 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+$startday_week  = 'Monday';    // one of $yesterday, $today, 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+
+
 $configs = array(
 
 /*     ========= BASIC CONFIGURATION =========
@@ -51,8 +59,8 @@ phpicalendar currently supports about 30 language variants.  For a list of suppo
 #     'language'             => 'Spanish',
 #     'default_cal'          => 'US Holidays',	   // Exact filename of calendar without .ics.
 #     'template'             => 'green',           // Template support: change this to have a different "skin" for your installation.     
-#    'default_view'         => 'year',           // Default view for calendars'     => 'day', 'week', 'month', 'year'
-#      'printview_default'    => 'yes',	           // Set print view as the default view. Uses'default_view (listed above).
+#     'default_view'         => 'year',           // Default view for calendars'     => 'day', 'week', 'month', 'year'
+#     'printview_default'    => 'yes',	           // Set print view as the default view. Uses'default_view (listed above).
 #     'gridLength'           => 10,                // Grid size in day and week views. Allowed values are 1,2,3,4,10,12,15,20,30,60. Default is 15
 #     'minical_view'         => 'current',	       // Where do the mini-calendars go when clicked?'     => 'day', 'week', 'month', 'current'
 #     'allow_preferences'    => 'no', 
@@ -61,11 +69,15 @@ phpicalendar currently supports about 30 language variants.  For a list of suppo
 #     'show_todos'           => 'no',
 #     'show_completed'       => 'no',
 #     'allow_login'          => 'yes',	           // Set to yes to prompt for login to unlock calendars.
-#     'week_start_day'       => 'Monday',          // Day of the week your week starts on
+#     'week_start_day'       => '$startday',          // Day of the week your week starts on
 #     'week_length'          => '5',	           // Number of days to display in the week view
+#     'week_start_day_month' => $startday_week,     // Day of the week your week starts on for months views, see above
+#     'week_length_month'=> '7',	           // Number of days to display for the week of month views
 #     'day_start'            => '0600',	           // Start time for day grid
 #     'day_end'              => '2000',	           // End time for day grid
-#      'event_download' => 'yes',
+#     'event_download'       => 'yes',
+#     'show_week_no'         => 'yes',           // show week number in week view
+#     'show_week_no_month'   => 'yes',           // show week number in month view
 
 
 /*     ========= CALENDAR PUBLISHING =========
@@ -100,7 +112,7 @@ these arrays provide extra calendar options.
 */
 $list_webcals = array(
 #	'webcal://dimer.tamu.edu/calendars/seminars/Biochem.ics'
-'webcal://calendar.sxsw.com/iCal-EXDrB-sa-sxsw@rollerfeet.com.ics'
+'webcal://' . gethostname() . '/calendars/test-webcal.ics'
 );
 $more_webcals['recur_tests'] = array();
 $locked_cals = array(
