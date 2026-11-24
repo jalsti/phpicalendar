@@ -206,7 +206,7 @@ function linkify_urls($text) {
 			}
 			// Don't leave a dangling HTML entity (e.g. "&amp" after trimming ";")
 			$url = preg_replace('/&[a-zA-Z]*$/', '', $url);
-			return '<a target="_new" href="' . $url . '">' . $url . '</a>';
+			return '<a target="_blank" href="' . $url . '">' . $url . '</a>';
 		},
 		$text
 	);
