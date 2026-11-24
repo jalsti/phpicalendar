@@ -33,7 +33,7 @@ Note that the allow_webcals setting allows webcals to be passed as URLs.  You do
 
 The salt parameter is used to obfuscate things like webcal links that may have usernames and passwords.  This should be changed.
 */
-     'calendar_path'        => $_SERVER['DOCUMENT_ROOT'].'/calendars/personal',
+#     'calendar_path'        => $_SERVER['DOCUMENT_ROOT'].'/calendars/personal',
 #     'calendar_path'        => '/Library/WebServer/Documents/phpicalendar/calendars/recur_tests',
 #     'default_path'         => '', 	
 #     'save_parsed_cals'     => 'yes', 
