@@ -265,7 +265,7 @@ foreach ($cal_filelist as $cal_key=>$filename) {
 
 				default:
 					unset ($field, $data, $prop_pos, $property);
-					if (preg_match ("/([^:]+):(.*)/", $line, $line)){
+					if (preg_match ("/([^:]+):(.*)/s", $line, $line)){
 					$field = $line[1];
 					$data = $line[2];
 					$property = strtoupper($field);
