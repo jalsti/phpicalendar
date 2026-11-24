@@ -175,9 +175,41 @@ $cal_displayname = implode(', ', $cal_displaynames);
 
 $rss_powered = ($phpiCal_config->enable_rss == 'yes') ? 'yes' : '';
 
-function getmicrotime() { 
-	list($usec, $sec) = explode(' ',microtime()); 
-	return ((float)$usec + (float)$sec); 
+function getmicrotime() {
+	list($usec, $sec) = explode(' ',microtime());
+	return ((float)$usec + (float)$sec);
+}
+
+/**
+ * Convert URLs found in (HTML-escaped) text into links.
+ *
+ * Handles URLs without a trailing slash, with query strings, fragments
+ * and '&amp;' entities. Trailing punctuation that is unlikely to be part
+ * of the URL is excluded from the link.
+ */
+function linkify_urls($text) {
+	return preg_replace_callback(
+		'/(blocked)?((?:https?|ftp):\/\/(?:[^\s<>&"\']|&amp;)+)/i',
+		function ($matches) {
+			$url = $matches[2];
+			// Trim trailing sentence punctuation
+			$url = preg_replace('/[.,;:!?]+$/', '', $url);
+			// Trim unmatched closing brackets, e.g. "(see http://example.com/foo)"
+			while (preg_match('/[)\]\}]$/', $url)) {
+				$last = $url[strlen($url) - 1];
+				$open = $last == ')' ? '(' : ($last == ']' ? '[' : '{');
+				if (substr_count($url, $last) > substr_count($url, $open)) {
+					$url = substr($url, 0, -1);
+				} else {
+					break;
+				}
+			}
+			// Don't leave a dangling HTML entity (e.g. "&amp" after trimming ";")
+			$url = preg_replace('/&[a-zA-Z]*$/', '', $url);
+			return '<a target="_new" href="' . $url . '">' . $url . '</a>';
+		},
+		$text
+	);
 }
 
 $uid_list = array();

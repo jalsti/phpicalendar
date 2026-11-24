@@ -18,8 +18,8 @@ $due_date 		= (isset($vtodo_array['due_date'])) ? localizeDate ($dateFormat_day,
 $priority 		= (isset($vtodo_array['priority'])) ? $vtodo_array['priority'] : ('');
 
 $cal_title_full = $calendar_name.' '.$lang['l_calendar'];
-$description	= preg_replace("/[a-zA-Z]+:\/\/[^<>[:space:]]+[a-zA-Z0-9\/]/", '<a target="_new" href="\0">\0</a>', $description);
-$vtodo_text		= preg_replace("/[a-zA-Z]+:\/\/[^<>[:space:]]+[a-zA-Z0-9\/]/",'<a target="_new" href="\0">\0</a>',$vtodo_text);
+$description	= linkify_urls($description);
+$vtodo_text		= linkify_urls($vtodo_text);
 
 
 if ((!isset($status) || $status == "COMPLETED") && isset($completed_date)) {

@@ -90,7 +90,7 @@ class Page {
 							$location 		= sanitizeForWeb(stripslashes(urldecode($new_val2['location'])));
 							$description 	= sanitizeForWeb(stripslashes(urldecode($new_val2['description'])));
 							if (!empty($description)) {
-								$description = preg_replace('/(blocked)?([a-zA-Z]+:\/\/([^<>&[:space:]]|&amp;)+[a-zA-Z0-9]\/)/', '<a target="_new" href="\2">\2</a>', $description);
+								$description = linkify_urls($description);
 								$description = preg_replace('/(blocked)?(mailto:)?([a-zA-Z0-9_.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})/', '<a href="mailto:\3">\3</a>', $description);
 							}
 
